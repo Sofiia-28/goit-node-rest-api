@@ -1,21 +1,12 @@
 const path = require("path");
-const contactsServicesPath = path.resolve(
-  __dirname,
-  "../services/contactsServices"
-);
-const {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContactById,
-} = require(contactsServicesPath);
+const contactPath = path.resolve(__dirname, "../schemas/contactModel");
+const Contact = require(contactPath);
 const HttpError = require("../helpers/HttpError");
 const _ = require("lodash");
 
 const getAllContacts = async (req, res, next) => {
   try {
-    const result = await listContacts();
+    const result = await Contact.find();
     res.json(result);
   } catch (error) {
     next(error);
@@ -25,7 +16,7 @@ const getAllContacts = async (req, res, next) => {
 const getOneContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const result = await getContactById(id);
+    const result = await Contact.findById(id);
     if (!result) {
       throw HttpError(404);
     }
@@ -38,7 +29,7 @@ const getOneContact = async (req, res, next) => {
 const deleteContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const result = await removeContact(id);
+    const result = await Contact.findByIdAndDelete(id);
     if (!result) {
       throw HttpError(404);
     }
@@ -50,7 +41,7 @@ const deleteContact = async (req, res, next) => {
 
 const createContact = async (req, res, next) => {
   try {
-    const result = await addContact(req.body);
+    const result = await Contact.create(req.body);
     res.status(201).json(result);
   } catch (error) {
     next(error);
@@ -60,12 +51,23 @@ const createContact = async (req, res, next) => {
 const updateContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, email, phone } = req.body;
-    console.log(name, email, phone);
-    const result = await updateContactById({ id, name, email, phone });
+    const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
     if (_.isEmpty(req.body)) {
       throw HttpError(400, "Body must have at least one field");
     }
+    if (!result) {
+      throw HttpError(404);
+    }
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateStatusContact = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await Contact.findByIdAndUpdate(id, req.body);
     if (!result) {
       throw HttpError(404);
     }
@@ -81,4 +83,5 @@ module.exports = {
   deleteContact,
   createContact,
   updateContact,
+  updateStatusContact,
 };
