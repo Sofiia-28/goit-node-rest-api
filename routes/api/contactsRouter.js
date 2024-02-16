@@ -6,13 +6,13 @@ const {
   createContact,
   updateContact,
   updateStatusContact,
-} = require("../controllers/contactsControllers");
+} = require("../../controllers/contacts");
 const {
   createContactSchema,
   updateContactSchema,
   updateStatusContactSchema,
-} = require("../schemas/contactsSchemas");
-const validateBody = require("../helpers/validateBody");
+} = require("../../schemas");
+const { validateBody } = require("../../helpers");
 
 const contactsRouter = express.Router();
 

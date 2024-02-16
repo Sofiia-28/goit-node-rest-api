@@ -9,7 +9,7 @@ const { DB_ADMIN_NAME, DB_ADMIN_PASSWORD, DB_CLUSTER_NAME, DB_NAME } =
   process.env;
 const DB_HOST = `mongodb+srv://${DB_ADMIN_NAME}:${DB_ADMIN_PASSWORD}@${DB_CLUSTER_NAME}.x2m1vxo.mongodb.net/${DB_NAME}`;
 
-const contactsRouter = require("./routes/contactsRouter");
+const contactsRouter = require("./routes/api");
 
 const app = express();
 
