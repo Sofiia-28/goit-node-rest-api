@@ -1,8 +1,15 @@
-const express = require('express');
+const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
-const contactsRouter = require('./routes/contactsRouter')
+dotenv.config();
+const { DB_ADMIN_NAME, DB_ADMIN_PASSWORD, DB_CLUSTER_NAME, DB_NAME } =
+  process.env;
+const DB_HOST = `mongodb+srv://${DB_ADMIN_NAME}:${DB_ADMIN_PASSWORD}@${DB_CLUSTER_NAME}.x2m1vxo.mongodb.net/${DB_NAME}`;
+
+const contactsRouter = require("./routes/api");
 
 const app = express();
 
@@ -21,6 +28,15 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-app.listen(3000, () => {
-  console.log("Server is running. Use our API on port: 3000");
-});
+mongoose
+  .connect(DB_HOST)
+  .then(() => console.log("Database connection successful"))
+  .then(() =>
+    app.listen(3000, () =>
+      console.log("Server is running. Use our API on port: 3000")
+    )
+  )
+  .catch((err) => {
+    console.error(err.message);
+    process.exit(1);
+  });
