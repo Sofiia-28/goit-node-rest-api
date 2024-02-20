@@ -1,5 +1,5 @@
 const path = require("path");
-const contactPath = path.resolve(__dirname, "../../schemas");
+const contactPath = path.resolve(__dirname, "../../models");
 const { Contact } = require(contactPath);
 
 const createContact = async (req, res, next) => {

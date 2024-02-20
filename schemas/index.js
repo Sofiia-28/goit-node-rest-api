@@ -1,13 +1,14 @@
-const Contact = require("./contactModel");
 const {
-  createContactSchema,
-  updateContactSchema,
-  updateStatusContactSchema,
-} = require("./contactsSchemas");
+    createContactSchema,
+    updateContactSchema,
+    updateStatusContactSchema,
+  } = require("./contactsSchemas");
 
-module.exports = {
-  Contact,
-  createContactSchema,
-  updateContactSchema,
-  updateStatusContactSchema,
-};
+  const createUserSchema = require('./userSchemas');
+  
+  module.exports = {
+    createContactSchema,
+    updateContactSchema,
+    updateStatusContactSchema,
+    createUserSchema,
+  };
