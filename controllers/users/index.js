@@ -1,3 +1,4 @@
 const getUserData = require("./getUserData");
+const uploadImage = require("./uploadImage");
 
-module.exports = getUserData;
+module.exports = { getUserData, uploadImage };

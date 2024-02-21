@@ -1,6 +1,7 @@
 const { User } = require("../../models");
 const { HttpError } = require("../../helpers");
 const bcrypt = require("bcrypt");
+const gravatar = require('gravatar');
 
 const registration = async (req, res, next) => {
   try {
@@ -11,10 +12,13 @@ const registration = async (req, res, next) => {
       const result = await User.create({
         email,
         password: hashedPassword,
+        "avatarURL": gravatar.url(email),
       });
+      const user = await User.findOne({ email });
       res.status(201).json({
         id: result._id,
         email,
+        "avatarURL": user.avatarURL
       });
     } catch (error) {
       if (error.code === 11000) {
