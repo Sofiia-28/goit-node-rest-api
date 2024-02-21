@@ -9,7 +9,8 @@ const { DB_ADMIN_NAME, DB_ADMIN_PASSWORD, DB_CLUSTER_NAME, DB_NAME } =
   process.env;
 const DB_HOST = `mongodb+srv://${DB_ADMIN_NAME}:${DB_ADMIN_PASSWORD}@${DB_CLUSTER_NAME}.x2m1vxo.mongodb.net/${DB_NAME}`;
 
-const { contactsRouter, usersRouter } = require("./routes/api");
+const contactsRouter = require("./routes/api");
+const usersRouter = require('./routes/users');
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/contacts", contactsRouter);
-app.use("/api/users", usersRouter);
+app.use("/users", usersRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
