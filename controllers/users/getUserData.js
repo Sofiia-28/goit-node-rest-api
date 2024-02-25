@@ -1,6 +1,9 @@
 const getUserData = async (req, res, next) => {
   try {
-    res.json(req.user);
+    res.json({
+      email: req.user.email,
+      subscription: req.user.subscription,
+    });
   } catch (error) {
     next(error);
   }
