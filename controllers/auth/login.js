@@ -9,9 +9,14 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
+
     if (!user) {
       throw HttpError(401, "Email or password is wrong");
     }
+
+    if (!user.verified) {
+      throw HttpError(401, 'Email is not verified! Please check your mailbox')
+  }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
@@ -19,7 +24,7 @@ const login = async (req, res, next) => {
     }
 
     const token = jwt.sign({id: user.id}, JWT_SECRET, {
-        expiresIn: '1h'
+        expiresIn: '15m'
     })
 
     res.json({
