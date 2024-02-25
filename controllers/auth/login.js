@@ -9,7 +9,6 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    console.log(user);
     if (!user) {
       throw HttpError(401, "Email or password is wrong");
     }
@@ -20,7 +19,7 @@ const login = async (req, res, next) => {
     }
 
     const token = jwt.sign({id: user.id}, JWT_SECRET, {
-        expiresIn: '15m'
+        expiresIn: '1h'
     })
 
     res.json({
